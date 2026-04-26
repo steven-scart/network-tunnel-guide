@@ -77,7 +77,7 @@ If Test 1 and Test 2 pass, this guide will work cleanly.
 
 ## Step 1 — Server Setup (Azure VM)
 
-SSH into your VM normally using port 22 before making any changes. Keep this session open throughout (it is your safety net, as you can imagine, routing all your traffic whilst also maintaining a connection with the machine you are routing the traffic to can create a loopy mess).
+SSH into your VM normally using port 22 before making any changes. Keep this session open throughout (it is your safety net, as you can imagine, routing all your traffic whilst also maintaining a connection with the machine you are routing the traffic to can create a mess).
 
 You can use the absolute cheapest tier of the machine for this, as long as it doesn't have any kind of network throttle. I have setup a Azure VM myself. The specifications were:
 ```
@@ -120,28 +120,6 @@ Azure Portal → Your VM → Networking → Inbound port rules → Add rule
   Protocol: TCP
   Action: Allow
 ```
-
-### 1c. Enable IP Forwarding and NAT
-
-This allows your VM to forward traffic from your device to the internet and route the responses back correctly.
-
-```bash
-# Enable IP forwarding
-echo "net.ipv4.ip_forward = 1" | sudo tee /etc/sysctl.d/99-tunnel.conf
-sudo sysctl --system
-
-# Find your network interface name (look for the one with your public IP)
-ip link show
-# Common names: eth0, ens3, enp0s3 — use whatever yours is called
-
-# Add NAT rule (replace eth0 with your actual interface name)
-sudo iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
-
-# Make it persist across reboots
-sudo apt install iptables-persistent -y
-sudo netfilter-persistent save
-```
-
 ---
 
 ## Step 2 — Client Setup
