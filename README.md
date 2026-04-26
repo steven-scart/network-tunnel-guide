@@ -85,7 +85,7 @@ Region: Central India
 Availability Zones: no redundancy
 Security: Standard
 Image: Ubuntu Server 24.04 LTS - x64 Gen2
-Size: Standard_F4s_v2
+Size: Standard_B1s_v2
 Auth Type: SSH public key
 OS Disk: 30 GB (Standard SSD)
 ```
